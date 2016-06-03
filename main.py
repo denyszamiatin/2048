@@ -3,6 +3,16 @@
 # issue 4 at GitHub.
 # test Rostyslav
 
+import random
+rand_cell=[]
+def randomize_cell(rand_cell):
+    x=random.randint(0. 3)
+    y=random.randint(0, 3)
+    rand_cell.append(x)
+    rand_cell.append(y)
+    return rand_cell
+
+
 def coordinates():
     '''
     For tests
