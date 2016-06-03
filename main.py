@@ -1,8 +1,7 @@
 # TODO: def coordinates():
 # Here should be a function that generates coordinates -
 # issue 4 at GitHub.
-# test 2
-
+# test Rostyslav
 
 def coordinates():
     '''
