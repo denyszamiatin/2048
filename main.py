@@ -1,24 +1,12 @@
-# TODO: def coordinates():
-# Here should be a function that generates coordinates -
-# issue 4 at GitHub.
-
-
 import random
-rand_cell=[]
-def randomize_cell(rand_cell):
-    x=random.randint(0. 3)
-    y=random.randint(0, 3)
-    rand_cell.append(x)
-    rand_cell.append(y)
-    return rand_cell
 
 
-def coordinates():
-    '''
-    For tests
-    :return:
-    '''
-    return [0, 0]
+def get_random_cell():
+    return [
+        random.randint(0, 3),
+        random.randint(0, 3)
+    ]
+
 
 EMPTY_CELL = 0
 
@@ -43,6 +31,9 @@ def get_new_xy(field):
     [0, 0]
     '''
     while True:
-        xy = coordinates()
+        xy = get_random_cell()
         if is_empty_cell(field, xy):
             return xy
+
+for i in range(5):
+    print(get_random_cell())
