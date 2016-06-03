@@ -1,22 +1,38 @@
-# def coordinates():
-# Here should be a function that generates coordinates - issue 4 at GitHub.
+# TODO: def coordinates():
+# Here should be a function that generates coordinates -
+# issue 4 at GitHub.
 
 
-# Validation of coordinates. A fragment of code that checks for the coordinates (tuple or list)
-# whether the corresponding cell of game field (list of lists) is free. If not, it generates a new pair of coordinates.
-# The operation repeats until the correct coordinates are generated.
+def coordinates():
+    '''
+    For tests
+    :return:
+    '''
+    return [0, 0]
 
-def validation(field, xy):
+EMPTY_CELL = 0
+
+
+def is_empty_cell(field, xy):
+    '''
+    >>> field = [[0, 2], [0, 0]]
+    >>> is_empty_cell(field, [0, 0])
+    True
+    >>> is_empty_cell(field, [0, 1])
+    False
+    '''
     row = xy[0]
     column = xy[1]
-    if field[row][column] != 0:
-        return False
-    else:
-        return True
+    return field[row][column] == EMPTY_CELL
 
-def new_coordinates(field):
-    check = False
-    while check is False:
+
+def get_new_xy(field):
+    '''
+    >>> field = [[0, 2], [0, 0]]
+    >>> get_new_xy(field)
+    [0, 0]
+    '''
+    while True:
         xy = coordinates()
-        check = validation(field, xy)
-    return xy
+        if is_empty_cell(field, xy):
+            return xy
