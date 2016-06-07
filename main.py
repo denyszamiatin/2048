@@ -1,24 +1,29 @@
 import random
 EMPTY_CELL = 0
-DIMENTION = 4
+DIMENSION = 4
 
-def create_gamefield(dimention, empty_cell):
+
+def create_field():
     '''
     Get number of rows and columns in game field (N rows == N columns)
     and value that marks empty cell. Return game field as a list of lists.
-    >>> create_gamefield(4,0)
+    >>> create_field()
     [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
-    >>> create_gamefield(3,1)
-    [[1, 1, 1], [1, 1, 1], [1, 1, 1]]
     '''
-    row = [int(n) for n in str(empty_cell) * dimention]
-    return [row] * dimention
+    return [
+        [EMPTY_CELL for _ in range(DIMENSION)]
+        for _ in range(DIMENSION)
+    ]
 
 
 def get_random_cell():
+    """
+    >>> 0 <= get_random_cell()[0] < DIMENSION
+    True
+    """
     return [
-        random.randint(0, 3),
-        random.randint(0, 3)
+        random.randint(0, DIMENSION - 1),
+        random.randint(0, DIMENSION - 1)
     ]
 
 
@@ -40,14 +45,11 @@ def is_empty_cell(field, xy):
 def get_new_xy(field):
     '''
     Get game field as list of lists. Generate new coordinates until corresponding cell is empty.
-    >>> field = [[0, 2], [0, 0]]
-    >>> get_new_xy(field)
-    [0, 0]
     '''
     while True:
         xy = get_random_cell()
         if is_empty_cell(field, xy):
             return xy
 
-for i in range(5):
-    print(get_random_cell())
+# for i in range(5):
+#     print(get_random_cell())
