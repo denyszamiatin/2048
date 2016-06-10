@@ -53,3 +53,88 @@ def get_new_xy(field):
 
 # for i in range(5):
 #     print(get_random_cell())
+
+# Issue 8.
+
+
+def get_column(field, y):
+    '''
+    Get game field and column index. Return column as a list.
+    >>> get_column([[2, 4], [0, 2]], 0)
+    [2, 0]
+    >>> get_column([[2, 4], [0, 2]], 1)
+    [4, 2]
+    '''
+    return [row[y] for row in field]
+
+
+def shift_values(column, up=True):
+    '''
+    Get column. Shift non-empty cells to the beginning (if up)
+    or end (if down) of the list.
+    Return shifted column.
+    >>> shift_values([2, 2, 0, 2])
+    [2, 2, 2, 0]
+    >>> shift_values([0, 2, 0, 4], False)
+    [0, 0, 2, 4]
+    >>> shift_values([4, 0, 0, 2])
+    [4, 2, 0, 0]
+    >>> shift_values([2, 4, 2, 0], False)
+    [0, 2, 4, 2]
+    '''
+    empties = column.count(EMPTY_CELL)
+    if empties < DIMENSION:
+        for _ in range (empties):
+            column.remove(EMPTY_CELL)
+        while empties:
+            if up:
+                column.append(EMPTY_CELL)
+            else:
+                column.insert(0, EMPTY_CELL)
+            empties -= 1
+    return column
+
+
+def merge_values(column, up=True):
+    '''
+    Get column. Merge non-empty equal values, add empty cells.
+    Return merged column.
+    >>> merge_values([2, 2, 2, 0])
+    [4, 2, 0, 0]
+    >>> merge_values([2, 2, 2, 2])
+    [4, 4, 0, 0]
+    >>> merge_values([2, 2, 2, 2], False)
+    [0, 0, 4, 4]
+    >>> merge_values([0, 2, 2, 2], False)
+    [0, 0, 2, 4]
+    >>> merge_values([2, 2, 2, 0])
+    [4, 2, 0, 0]
+    '''
+    if up:
+        direction = 1
+        start = 0
+        end = DIMENSION - 1
+        insert = DIMENSION
+    else:
+        direction = -1
+        start = DIMENSION - 1
+        end = 0
+        insert = 0
+    for i in range(start, end, direction):
+        if column[i] != EMPTY_CELL and column[i] == column[i+direction]:
+            column[i] *= 2
+            column.pop(i+direction)
+            column.insert(insert, EMPTY_CELL)
+    return column
+
+
+def return_column(field, column, y):
+    '''
+    Get game field, column and column index.
+    Replace column in game field with a new one.
+    >>> return_column([[2, 2, 2, 2], [2, 2, 4, 0], [0, 2, 0, 0], [0, 0, 0, 0]], [4, 2, 0, 0], 1)
+    [[2, 4, 2, 2], [2, 2, 4, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    '''
+    for x in range(DIMENSION):
+        field[x][y] = column[x]
+    return field
