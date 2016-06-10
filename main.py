@@ -49,11 +49,6 @@ def get_new_xy(field):
         if is_empty_cell(field, xy):
             return xy
 
-# for i in range(5):
-#     print(get_random_cell())
-
-# Issue 8.
-
 
 def get_column(field, y):
     '''
