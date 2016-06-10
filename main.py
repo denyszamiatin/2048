@@ -21,10 +21,9 @@ def get_random_cell():
     >>> 0 <= get_random_cell()[0] < DIMENSION
     True
     """
-    return [
+    return
         random.randint(0, DIMENSION - 1),
         random.randint(0, DIMENSION - 1)
-    ]
 
 
 def is_empty_cell(field, xy):
@@ -37,8 +36,7 @@ def is_empty_cell(field, xy):
     >>> is_empty_cell(field, [0, 1])
     False
     '''
-    row = xy[0]
-    column = xy[1]
+    row, column = xy
     return field[row][column] == EMPTY_CELL
 
 
