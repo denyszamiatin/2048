@@ -21,10 +21,9 @@ def get_random_cell():
     >>> 0 <= get_random_cell()[0] < DIMENSION
     True
     """
-    return [
+    return
         random.randint(0, DIMENSION - 1),
         random.randint(0, DIMENSION - 1)
-    ]
 
 
 def is_empty_cell(field, xy):
@@ -37,8 +36,7 @@ def is_empty_cell(field, xy):
     >>> is_empty_cell(field, [0, 1])
     False
     '''
-    row = xy[0]
-    column = xy[1]
+    row, column = xy
     return field[row][column] == EMPTY_CELL
 
 
@@ -50,11 +48,6 @@ def get_new_xy(field):
         xy = get_random_cell()
         if is_empty_cell(field, xy):
             return xy
-
-# for i in range(5):
-#     print(get_random_cell())
-
-# Issue 8.
 
 
 def get_column(field, y):
@@ -83,16 +76,17 @@ def shift_values(column, up=True):
     [0, 2, 4, 2]
     '''
     empties = column.count(EMPTY_CELL)
-    if empties < DIMENSION:
-        for _ in range (empties):
-            column.remove(EMPTY_CELL)
-        while empties:
-            if up:
-                column.append(EMPTY_CELL)
-            else:
-                column.insert(0, EMPTY_CELL)
-            empties -= 1
-    return column
+    column = remove_empties(column)
+    return column + get_empties(empties) if up \
+        else get_empties(empties) + column
+
+
+def get_empties(empties):
+    return [EMPTY_CELL for _ in range(empties)]
+
+
+def remove_empties(column):
+    return [cell for cell in column if cell != EMPTY_CELL]
 
 
 def merge_values(column, up=True):
@@ -111,21 +105,30 @@ def merge_values(column, up=True):
     [4, 2, 0, 0]
     '''
     if up:
-        direction = 1
-        start = 0
-        end = DIMENSION - 1
-        insert = DIMENSION
+        _merge_column(
+            column,
+            direction=1,
+            start=0,
+            end=DIMENSION - 1,
+            insert=DIMENSION
+        )
     else:
-        direction = -1
-        start = DIMENSION - 1
-        end = 0
-        insert = 0
-    for i in range(start, end, direction):
-        if column[i] != EMPTY_CELL and column[i] == column[i+direction]:
-            column[i] *= 2
-            column.pop(i+direction)
-            column.insert(insert, EMPTY_CELL)
+        _merge_column(
+            column,
+            direction=-1,
+            start=DIMENSION - 1,
+            end=0,
+            insert=0
+        )
     return column
+
+
+def _merge_column(column, direction, start, end, insert):
+    for i in range(start, end, direction):
+        if column[i] != EMPTY_CELL and column[i] == column[i + direction]:
+            column[i] *= 2
+            column.pop(i + direction)
+            column.insert(insert, EMPTY_CELL)
 
 
 def return_column(field, column, y):
@@ -135,6 +138,6 @@ def return_column(field, column, y):
     >>> return_column([[2, 2, 2, 2], [2, 2, 4, 0], [0, 2, 0, 0], [0, 0, 0, 0]], [4, 2, 0, 0], 1)
     [[2, 4, 2, 2], [2, 2, 4, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
     '''
-    for x in range(DIMENSION):
-        field[x][y] = column[x]
+    for x, value in enumerate(column):
+        field[x][y] = value
     return field
