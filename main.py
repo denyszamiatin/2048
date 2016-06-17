@@ -60,6 +60,14 @@ def get_column(field, y):
     '''
     return [row[y] for row in field]
 
+def get_string(field, x):
+    '''
+    >>> get_string([1, 2], [3, 4], 0)
+    [1, 2]
+    >>> get_string([5, 6], [7, 8], 1)
+    [7, 8]
+    '''
+    return [row[x] for row in field]
 
 def shift_values(column, up=True):
     '''
@@ -77,8 +85,12 @@ def shift_values(column, up=True):
     '''
     empties = column.count(EMPTY_CELL)
     column = remove_empties(column)
+
     return column + get_empties(empties) if up \
         else get_empties(empties) + column
+
+
+
 
 
 def get_empties(empties):
@@ -88,6 +100,8 @@ def get_empties(empties):
 def remove_empties(column):
     return [cell for cell in column if cell != EMPTY_CELL]
 
+def remove_empties_string(string):
+    return [cell for cell in string if cell != EMPTY_CELL]
 
 def merge_values(column, up=True):
     '''
@@ -141,3 +155,65 @@ def return_column(field, column, y):
     for x, value in enumerate(column):
         field[x][y] = value
     return field
+
+
+def merge_values_string(string, left=True):
+    '''
+    Get column. Merge non-empty equal values, add empty cells.
+    Return merged column.
+    >>> merge_values_string([2, 2, 2, 0])
+    [4, 2, 0, 0]
+    >>> merge_values_string([2, 2, 2, 2])
+    [4, 4, 0, 0]
+    >>> merge_values_string([2, 2, 2, 2], False)
+    [0, 0, 4, 4]
+    >>> merge_values_string([0, 2, 2, 2], False)
+    [0, 0, 2, 4]
+    >>> merge_values_string([2, 2, 2, 0])
+    [4, 2, 0, 0]
+    '''
+    if left:
+        _merge_string(
+            string,
+            direction=1,
+            start=0,
+            end=DIMENSION - 1,
+            insert=DIMENSION
+        )
+    else:
+        _merge_string(
+            string,
+            direction=-1,
+            start=DIMENSION - 1,
+            end=0,
+            insert=0
+        )
+    return string
+
+
+def _merge_string(string, direction, start, end, insert):
+    for i in range(start, end, direction):
+        if string[i] != EMPTY_CELL and string[i] == string[i + direction]:
+            string[i] *= 2
+            string.pop(i + direction)
+            string.insert(insert, EMPTY_CELL)
+
+
+def return_string(field, string, x):
+    '''
+    '''
+    for y, value in enumerate(string):
+        field[x][y] = value
+    return field
+
+
+# zip merge
+# for v1, v2 in list(zip(l, l[1:] + [0])):
+#  if skip:
+#   skip = False
+#   continue
+#  if v1 == v2:
+#   res.append(v1 + v2)
+#   skip = True
+#  else:
+#   res.append(v1)
