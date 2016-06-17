@@ -85,6 +85,7 @@ def shift_values(column, up=True):
     '''
     empties = column.count(EMPTY_CELL)
     column = remove_empties(column)
+
     return column + get_empties(empties) if up \
         else get_empties(empties) + column
 
@@ -206,24 +207,13 @@ def return_string(field, string, x):
     return field
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# zip merge
+# for v1, v2 in list(zip(l, l[1:] + [0])):
+#  if skip:
+#   skip = False
+#   continue
+#  if v1 == v2:
+#   res.append(v1 + v2)
+#   skip = True
+#  else:
+#   res.append(v1)
