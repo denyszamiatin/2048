@@ -217,3 +217,14 @@ def return_string(field, string, x):
 #   skip = True
 #  else:
 #   res.append(v1)
+
+# zip merge
+# for v1, v2 in list(zip(l, l[1:] + [0])):
+#  if skip:
+#   skip = False
+#   continue
+#  if v1 == v2:
+#   res.append(v1 + v2)
+#   skip = True
+#  else:
+#   res.append(v1)
