@@ -226,3 +226,19 @@ def generate_number(a=1, b=4):
         return NEW_CELL_IS_2
     else:
         return NEW_CELL_IS_4
+
+
+def shift_field_vertically(up, field):
+    '''
+    Get field and direction of shift (up or down).
+    Make shift of every column of the field. Return shifted field.
+    >>> shift_field_vertically(False, [[2,2,2,4], [2,2,2,4],[0,0,0,0],[2,2,0,0]])
+    [[0, 0, 0, 0], [0, 0, 0, 0], [2, 2, 0, 0], [4, 4, 4, 8]]
+    >>> shift_field_vertically(True, [[2,2,2,4], [2,2,2,4],[0,0,0,0],[2,2,0,0]])
+    [[4, 4, 4, 8], [2, 2, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    '''
+    for y in range(0, DIMENSION):
+        column = get_column(field, y)
+        new_column = merge_values(shift_values(column, up), up)
+        return_column(field, new_column, y)
+    return field
