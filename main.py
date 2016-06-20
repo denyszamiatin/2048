@@ -1,7 +1,8 @@
 import random
 EMPTY_CELL = 0
 DIMENSION = 4
-
+NEW_CELL1 = 2
+NEW_CELL2 = 4
 
 def create_field():
     '''
@@ -217,3 +218,11 @@ def return_string(field, string, x):
 #   skip = True
 #  else:
 #   res.append(v1)
+
+
+def generate_number(a=1, b=4):
+    number = random.randint(a, b)
+    if number < 4:
+        return NEW_CELL1
+    else:
+        return NEW_CELL2
