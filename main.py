@@ -206,6 +206,42 @@ def return_string(field, string, x):
         field[x][y] = value
     return field
 
+def output(l=create_field()):
+        row_max = [0 for _ in range(DIMENSION)]  # Список максимальных значений по столбцам
+        l1 = create_field()  # Список значений разрядов чисел
+        l2 = [0 for _ in range(DIMENSION)]
+        deflong = 0  # Переменная для дефисов
+
+        # Заполнение значений разрядов чисел из основного списка
+
+        for a in range(DIMENSION):
+            for b in range(DIMENSION):
+                l1[a][b] = len(str(l[a][b]))
+
+        # Поиск максимального разряда в столбцах
+        for a in range(DIMENSION):
+            for b in range(DIMENSION):
+                l2[b] = l1[b][a]
+            row_max[a] = max(l2)
+
+        # Вставляем необходимое количество пробелов в основной список
+
+        for a in range(DIMENSION):
+            for b in range(DIMENSION):
+                l[a][b] = (' ') * (row_max[b] - l1[a][b]) + str(l[a][b])
+
+        # Подсчет колличества необходимых дефисов
+
+        for a in range(DIMENSION):
+            deflong = len(l[a][a]) + deflong
+
+        # Вывод
+        print(('-') * (deflong + DIMENSION + 1))
+        for a in range(DIMENSION):
+            print('', end='|')
+            for b in range(DIMENSION):
+                print(l[a][b], end='|')
+            print('\n' + ('-') * (deflong + DIMENSION + 1))
 
 # zip merge
 # for v1, v2 in list(zip(l, l[1:] + [0])):
