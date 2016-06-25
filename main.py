@@ -63,7 +63,7 @@ def get_column(field, y):
     return [row[y] for row in field]
 
 
-def get_string(field, x):
+def get_row(field, x):
     '''
     >>> get_string([[1, 2], [3, 4]], 0)
     [1, 2]
@@ -104,8 +104,6 @@ def get_empties(empties):
 def remove_empties(column):
     return [cell for cell in column if cell != EMPTY_CELL]
 
-def remove_empties_string(string):
-    return [cell for cell in string if cell != EMPTY_CELL]
 
 def merge_values(column, up=True):
     '''
@@ -161,55 +159,9 @@ def return_column(field, column, y):
     return field
 
 
-def merge_values_string(string, left=True):
-    '''
-    Get column. Merge non-empty equal values, add empty cells.
-    Return merged column.
-    >>> merge_values_string([2, 2, 2, 0])
-    [4, 2, 0, 0]
-    >>> merge_values_string([2, 2, 2, 2])
-    [4, 4, 0, 0]
-    >>> merge_values_string([2, 2, 2, 2], False)
-    [0, 0, 4, 4]
-    >>> merge_values_string([0, 2, 2, 2], False)
-    [0, 0, 2, 4]
-    >>> merge_values_string([2, 2, 2, 0])
-    [4, 2, 0, 0]
-    '''
-    if left:
-        _merge_string(
-            string,
-            direction=1,
-            start=0,
-            end=DIMENSION - 1,
-            insert=DIMENSION
-        )
-    else:
-        _merge_string(
-            string,
-            direction=-1,
-            start=DIMENSION - 1,
-            end=0,
-            insert=0
-        )
-    return string
-
-
-def _merge_string(string, direction, start, end, insert):
-    for i in range(start, end, direction):
-        if string[i] != EMPTY_CELL and string[i] == string[i + direction]:
-            string[i] *= 2
-            string.pop(i + direction)
-            string.insert(insert, EMPTY_CELL)
-
-
-def return_string(field, string, x):
-    '''
-    '''
-    for y, value in enumerate(string):
-        field[x][y] = value
+def return_row(field, row, x):
+    field[x] = row
     return field
-
 
 
 def output(field):
@@ -256,6 +208,31 @@ def shift_field_vertically(up, field):
     return field
 
 
-if __name__ == '__main__':
-    DIMENSION = 3
-    output([[2, 256, 32], [2, 2, 2], [1024, 32, 32]])
+def shift_field_horisontally(left, field):
+    '''
+    Get field and direction of shift (left or right).
+    Make shift of every row of the field. Return shifted field.
+    >>> shift_field_horisontally(False, [[2,2,2,4], [4,2,2,2],[0,0,0,0],[2,2,0,0]])
+    [[0, 2, 4, 4], [0, 4, 2, 4], [0, 0, 0, 0], [0, 0, 0, 4]]
+    >>> shift_field_horisontally(True, [[2,2,2,4], [4,2,2,2],[0,0,0,0],[2,2,0,0]])
+    [[4, 2, 4, 0], [4, 4, 2, 0], [0, 0, 0, 0], [4, 0, 0, 0]]
+    '''
+    for x in range(DIMENSION):
+        row = get_row(field, x)
+        new_row = merge_values(shift_values(row, left), left)
+        return_row(field, new_row, x)
+    return field
+
+
+def check_gameover(field):
+    '''
+    Get field. Return True if there is no empty cells in field, else False.
+    >>> check_gameover([[2,2,2,4], [4,2,2,2],[2,2,4,2],[2,2,4,0]])
+    False
+    >>> check_gameover([[2,2,2,4], [4,2,2,2],[2,2,4,2],[2,2,4,2]])
+    True
+    '''
+    for row in field:
+        if EMPTY_CELL in row:
+            return False
+    return True
